@@ -3,7 +3,7 @@ const app = express();
 const PORT = 8080; // default port 8080
 
 app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -17,11 +17,10 @@ const generateRandomString = () => {
     const charIndex = Math.floor(Math.random() * possibleChars.length);
     outputBuffer.push(possibleChars[charIndex]);
   }
-  console.log(outputBuffer)
   outputBuffer = outputBuffer.join('');
   return outputBuffer;
 };
- 
+
 //_______________________________________________________________________________________
 
 app.get("/", (req, res) => {
@@ -38,10 +37,11 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.post('/urls', (req, res) => {
-  const n = generateRandomString()
+  const n = generateRandomString();
   urlDatabase[n] = req.body.longURL;
-  res.send("Ok")
-})
+  res.redirect('/urls/' + n);
+});
+
 
 app.get('/urls.json', (req, res) => {
   res.json(urlDatabase);
@@ -50,6 +50,13 @@ app.get('/urls.json', (req, res) => {
 app.get('/help', (req, res) => {
   const someStuff = { greeting: 'Howdy partner!' };
   res.render('urls_help', someStuff);
+});
+
+app.get('/u/:id', (req, res) => {
+  const id = req.url.slice(3)
+  console.log(id)
+  const longURL = urlDatabase[id];
+  res.redirect(301, longURL);
 });
 
 app.get('/urls/:id', (req, res) => {
