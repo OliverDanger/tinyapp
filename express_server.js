@@ -39,7 +39,7 @@ app.get('/urls/new', (req, res) => {
 app.post('/urls', (req, res) => {
   const n = generateRandomString();
   urlDatabase[n] = req.body.longURL;
-  res.redirect('/urls/' + n);
+  res.redirect('/urls/:id' + n);
 });
 
 
