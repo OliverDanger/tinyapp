@@ -27,6 +27,11 @@ app.get("/", (req, res) => {
   res.send("<html><body>Hello World!<h1> How did you get here? </h1></body></html>\n");
 });
 
+app.get('/help', (req, res) => {
+  const someStuff = { greeting: 'HI!' };
+  res.render('urls_help', someStuff);
+});
+
 app.get('/urls', (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render('urls_index', templateVars);
@@ -36,32 +41,37 @@ app.get('/urls/new', (req, res) => {
   res.render('urls_new');
 });
 
-app.post('/urls', (req, res) => {
-  const n = generateRandomString();
-  urlDatabase[n] = req.body.longURL;
-  res.redirect('/urls/:id' + n);
-});
+  app.post('/urls', (req, res) => {
+    const n = generateRandomString();
+    urlDatabase[n] = req.body.longURL;
+    res.redirect('/urls/' + n);
+  });
 
 
 app.get('/urls.json', (req, res) => {
   res.json(urlDatabase);
 });
 
-app.get('/help', (req, res) => {
-  const someStuff = { greeting: 'Howdy partner!' };
-  res.render('urls_help', someStuff);
-});
-
 app.get('/u/:id', (req, res) => {
-  const id = req.url.slice(3)
-  console.log(id)
-  const longURL = urlDatabase[id];
-  res.redirect(301, longURL);
+  const destination = urlDatabase[req.params.id];
+  res.redirect(301, destination)
 });
 
 app.get('/urls/:id', (req, res) => {
   const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] };
   res.render('urls_show', templateVars);
+});
+
+app.post('/urls/:id/delete', (req, res) => {
+  const id = (req.params.id);
+  delete urlDatabase[id]
+  res.redirect( '/urls')
+})
+
+app.post('/urls', (req, res) => {
+  const n = generateRandomString();
+  urlDatabase[n] = req.body.longURL;
+  res.redirect('/urls/:id' + n);
 });
 
 //_______________________________________________________________________________________
