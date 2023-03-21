@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -8,21 +14,30 @@
       integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
       crossorigin="anonymous"
     />
-    <title>URL - TinyApp</title>
+
+    <title>HELP</title>
   </head>
 
   <body>
     <%- include('partials/_header') %>
-    <div class="card text-center">
-      <div class="card-header"></div>
-      <div class="card-body">
-        <h5 class="card-title">TinyURL for: <%= longURL %></h5>
-        <p class="card-text">
-          Short URL ID: <a href="/u/<%= id %>"><%= id %></a>
-        </p>
-      </div>
-      <div class="card-footer text-muted"></div>
-    </div>
+
+    <main style="margin: 1em;">
+      <h3>HELP I'm trapped inside this webpage <br>and YOU are the only one who can RESCUE ME!</h3>
+      <p1>your html advice could save my life:</p1>
+      <form class="form-inline" action="/urls" method="POST">
+        <div class="form-group mb-2">
+          <label for="longURL">help:</label>
+          <input
+            class="form-control"
+            type="text"
+            name="longURL"
+            placeholder="-save me-"
+            style="width: 300px; margin: 1em"
+          />
+          <button type="submit" class="btn btn-primary">help</button>
+        </div>
+      </form>
+    </main>
     <!-- Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -39,6 +54,5 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-    <%- include('partials/_footer') %>
   </body>
 </html>

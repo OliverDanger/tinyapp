@@ -9,6 +9,8 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+
+
 app.get("/", (req, res) => {
   res.send("<html><body>Hello World!<h1> How did you get here? </h1></body></html>\n")
 });
@@ -26,6 +28,11 @@ app.get('/urls/:id', (req, res) => {
 app.get('/urls.json', (req, res) => {
   res.json(urlDatabase);
 })
+
+app.get('/help', (req, res) => {
+const someStuff = { greeting: 'Howdy partner!' }
+  res.render('urls_help', someStuff);
+});
 
 
 app.listen(PORT, () => {
