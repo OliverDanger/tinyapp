@@ -22,51 +22,60 @@ const generateRandomString = () => {
 };
 
 //_______________________________________________________________________________________
-
+//home
 app.get("/", (req, res) => {
   res.send("<html><body>Hello World!<h1> How did you get here? </h1></body></html>\n");
 });
-
+//joke page
 app.get('/help', (req, res) => {
   const someStuff = { greeting: 'HI!' };
   res.render('urls_help', someStuff);
 });
-
+//index
 app.get('/urls', (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render('urls_index', templateVars);
 });
-
+//visit add new url page
 app.get('/urls/new', (req, res) => {
   res.render('urls_new');
 });
 
-  app.post('/urls', (req, res) => {
-    const n = generateRandomString();
-    urlDatabase[n] = req.body.longURL;
-    res.redirect('/urls/' + n);
-  });
+//post a new url
+app.post('/urls', (req, res) => {
+  const n = generateRandomString();
+  urlDatabase[n] = req.body.longURL;
+  res.redirect('/urls/' + n);
+});
 
-
+//return json url database
 app.get('/urls.json', (req, res) => {
   res.json(urlDatabase);
 });
-
+//redirect to longURL
 app.get('/u/:id', (req, res) => {
-  const destination = urlDatabase[req.params.id];
-  res.redirect(301, destination)
+  console.log('destination', urlDatabase[req.params.id])
+  const destination = "http://" + urlDatabase[req.params.id];
+  res.redirect(302, destination);
 });
-
+//show url details
 app.get('/urls/:id', (req, res) => {
   const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] };
   res.render('urls_show', templateVars);
 });
+//edit url
+app.post('/urls/:id', (req, res) => {
+  console.log('before',urlDatabase[req.params.id])
+  urlDatabase[req.params.id] = req.body.editURL
+  console.log('after',urlDatabase[req.params.id])
+  res.redirect('/urls/');
+});
 
 app.post('/urls/:id/delete', (req, res) => {
   const id = (req.params.id);
-  delete urlDatabase[id]
-  res.redirect( '/urls')
-})
+  delete urlDatabase[id];
+  res.redirect('/urls');
+});
 
 app.post('/urls', (req, res) => {
   const n = generateRandomString();

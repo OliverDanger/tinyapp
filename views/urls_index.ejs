@@ -36,6 +36,9 @@
               <form method="POST" action="/urls/<%= id %>/delete">
                 <td><button name="delete" type="submit" class="btn btn-primary" style="background-color:rgb(232, 56, 3)">Delete</button></td>
               </form>
+              <form method="GET" action="/urls/<%= id %>">
+                <td><button name="edit" type="submit" class="btn btn-primary" style="background-color:rgb(232, 157, 6)">Edit</button></td>
+              </form>
             </tr>
           <% } %>
         </tbody>
