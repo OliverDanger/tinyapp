@@ -31,6 +31,13 @@ app.get('/help', (req, res) => {
   const someStuff = { greeting: 'HI!' };
   res.render('urls_help', someStuff);
 });
+
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  res.cookie('username', username, { httpOnly: false });
+  res.redirect('/urls')
+});
+
 //index
 app.get('/urls', (req, res) => {
   const templateVars = { urls: urlDatabase };
@@ -54,7 +61,7 @@ app.get('/urls.json', (req, res) => {
 });
 //redirect to longURL
 app.get('/u/:id', (req, res) => {
-  console.log('destination', urlDatabase[req.params.id])
+  console.log('destination', urlDatabase[req.params.id]);
   const destination = "http://" + urlDatabase[req.params.id];
   res.redirect(302, destination);
 });
@@ -65,18 +72,16 @@ app.get('/urls/:id', (req, res) => {
 });
 //edit url
 app.post('/urls/:id', (req, res) => {
-  console.log('before',urlDatabase[req.params.id])
-  urlDatabase[req.params.id] = req.body.editURL
-  console.log('after',urlDatabase[req.params.id])
+  urlDatabase[req.params.id] = req.body.editURL;
   res.redirect('/urls/');
 });
-
+//delete a url from the database
 app.post('/urls/:id/delete', (req, res) => {
   const id = (req.params.id);
   delete urlDatabase[id];
   res.redirect('/urls');
 });
-
+//add new url to database, redirect to that url's page
 app.post('/urls', (req, res) => {
   const n = generateRandomString();
   urlDatabase[n] = req.body.longURL;
