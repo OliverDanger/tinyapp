@@ -13,7 +13,7 @@
       </div>
 
     </div>
-    <% if (typeof(username) =='undefined' ) { %>
+    <% if (typeof(user) =='undefined' ) { %>
     <form class="form-inline" action="/login" method="POST">
       <div class="form-group mb-2">
         <label for="username">Username:</label>
@@ -24,10 +24,10 @@
       </div>
 
       <div>
-        <% if (typeof(username) !='undefined' ) { %>
+        <% if (typeof(user) !='undefined' ) { %>
 
       </form>
-      <label for="logout">Signed in as <i><b><%= username%></b></i>:</label>
+      <label for="logout">Signed in as <i><b><%= user.email%></b></i>:</label>
       <form method="POST" action="/logout">
       <td><button name="logout" type="submit" class="btn btn-primary"
           style="background-color:rgb(232, 56, 3)">Logout</button></td>
