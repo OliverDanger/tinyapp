@@ -1,7 +1,9 @@
 const express = require("express");
+const cookieParser = require('cookie-parser')
 const app = express();
 const PORT = 8080; // default port 8080
 
+app.use(cookieParser())
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,26 +28,44 @@ const generateRandomString = () => {
 app.get("/", (req, res) => {
   res.send("<html><body>Hello World!<h1> How did you get here? </h1></body></html>\n");
 });
+
 //joke page
 app.get('/help', (req, res) => {
-  const someStuff = { greeting: 'HI!' };
-  res.render('urls_help', someStuff);
+  const templateVars = { 
+    username: req.cookies["username"],
+    greeting: 'HI!'
+  };
+  res.render('urls_help', templateVars);
 });
 
+//login a user
 app.post('/login', (req, res) => {
   const username = req.body.username;
   res.cookie('username', username, { httpOnly: false });
   res.redirect('/urls')
 });
 
+//logout a user
+app.post('/logout', (req, res) => {
+  res.clearCookie('username');
+  res.redirect('/urls')
+})
+
 //index
 app.get('/urls', (req, res) => {
-  const templateVars = { urls: urlDatabase };
+  const templateVars = { 
+    username: req.cookies["username"],
+    urls: urlDatabase
+  };
   res.render('urls_index', templateVars);
 });
+
 //visit add new url page
 app.get('/urls/new', (req, res) => {
-  res.render('urls_new');
+  const templateVars = { 
+    username: req.cookies["username"]
+  };
+  res.render('urls_new', templateVars);
 });
 
 //post a new url
@@ -67,7 +87,11 @@ app.get('/u/:id', (req, res) => {
 });
 //show url details
 app.get('/urls/:id', (req, res) => {
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] };
+  const templateVars = { 
+    id: req.params.id, 
+    longURL: urlDatabase[req.params.id],
+    username: req.cookies["username"]
+   };
   res.render('urls_show', templateVars);
 });
 //edit url
