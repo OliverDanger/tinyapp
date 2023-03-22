@@ -64,11 +64,11 @@ app.get('/help', (req, res) => {
 
 
 
-//get register page
+//go to register page
 app.get('/register', (req, res) => {
   res.render('urls_register');
 });
-
+//attempt to register a user
 app.post('/register', (req, res) => {
   console.log(req.body);
   const { id, email, password } = req.body;
@@ -95,10 +95,38 @@ app.post('/register', (req, res) => {
   console.log(users);
   res.redirect('/urls');
 });
-
+//go to login pagee
 app.get("/login", (req, res) => {
   res.render('urls_login')
 })
+//attempt a login
+app.post("/login", (req, res) => {
+
+  const { email, password } = req.body;
+  const trueUser = isMatchingEmail(email)
+
+  if (!trueUser) {
+    res.status(403).redirect('/login')
+    return;
+  }
+
+  if( password != trueUser.password ) {
+    res.status(403).redirect('/login')
+    return;
+  }
+
+  res.cookie('user_id', trueUser.id, { httpOnly: false });
+  console.log('logged in as', email)
+  res.redirect('/urls');
+
+
+})
+
+//logout a user
+app.post('/logout', (req, res) => {
+  res.clearCookie('user_id');
+  res.redirect('/login');
+});
 
 //index
 app.get('/urls', (req, res) => {
@@ -169,11 +197,7 @@ app.post('/urls', (req, res) => {
 //   res.redirect('/urls');
 // });
 
-// //logout a user
-// app.post('/logout', (req, res) => {
-//   res.clearCookie('user_id');
-//   res.redirect('/urls');
-// });
+
 
 //_______________________________________________________________________________________
 app.listen(PORT, () => {

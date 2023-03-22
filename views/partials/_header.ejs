@@ -13,26 +13,25 @@
       </div>
 
     </div>
-    <% if (typeof(user) =='undefined' ) { %>
-    <form class="form-inline" action="/login" method="POST">
-      <div class="form-group mb-2">
-        <label for="username">Username:</label>
-        <input class="form-control" type="text" name="username" placeholder="eg. URLslayer3000"
-          style="width: 400px; margin: 1em" />
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <% } %>
-      </div>
-
-      <div>
-        <% if (typeof(user) !='undefined' ) { %>
-
-      </form>
-      <label for="logout">Signed in as <i><b><%= user.email%></b></i>:</label>
-      <form method="POST" action="/logout">
-      <td><button name="logout" type="submit" class="btn btn-primary"
-          style="background-color:rgb(232, 56, 3)">Logout</button></td>
-    </form>
+    <% if (typeof(user)=='undefined' ) { %>
+      <tr>
+        <form method="GET" action="/login">
+          <td><button name="login" type="submit" class="btn btn-primary" style="background-color:rgb(166, 250, 22)">Login</button></td>
+        </form>
+ 
+        <form method="GET" action="/register">
+          <td><button name="register" type="submit" class="btn btn-primary" style="background-color:rgb(218, 22, 248)">Register</button></td>
+        </form>
+      </tr>
     <% } %>
-      </div>
+        </div>
+
+        <div>
+          <% if (typeof(user) !='undefined' ) { %>
+            <form method="POST" action="/logout">
+              <td><button name="logout" type="submit" class="btn btn-primary" style="background-color:rgb(232, 56, 3)">Log Out</button></td>
+            </form>
+          <% } %>
+        </div>
   </nav>
 </header>
