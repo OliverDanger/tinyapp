@@ -28,9 +28,12 @@
 
         <div>
           <% if (typeof(user) !='undefined' ) { %>
+            <tr>
+            <td>Signed in as <b><%= user.email %></b>:</td>
             <form method="POST" action="/logout">
               <td><button name="logout" type="submit" class="btn btn-primary" style="background-color:rgb(232, 56, 3)">Log Out</button></td>
             </form>
+            </tr>
           <% } %>
         </div>
   </nav>

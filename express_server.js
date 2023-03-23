@@ -14,12 +14,12 @@ const urlDatabase = {
 
 const users = {
   000001: {
-    id: "URLslayer3000",
+    id: 000001,
     email: "URLslayer3000@yahoo.ca",
     password: "turle-duck"
   },
   000002: {
-    id: "URLslayer9000",
+    id: 000002,
     email: "URLslayer9000@yahoo.ca",
     password: "turle-goose"
   }
@@ -56,7 +56,7 @@ app.get("/", (req, res) => {
 //joke page
 app.get('/help', (req, res) => {
   const templateVars = {
-    user: users[req.cookies["user_id"]],
+    user: users[req.cookies.user_id],
     greeting: 'HI!'
   };
   res.render('urls_help', templateVars);
@@ -66,6 +66,10 @@ app.get('/help', (req, res) => {
 
 //go to register page
 app.get('/register', (req, res) => {
+  if (req.cookies.user_id) {
+    res.redirect("/urls");
+    return;
+  }
   res.render('urls_register');
 });
 //attempt to register a user
@@ -93,10 +97,14 @@ app.post('/register', (req, res) => {
   };
   res.cookie('user_id', newID, { httpOnly: false });
   console.log(users);
-  res.redirect('/urls');
+  res.redirect("/urls");
 });
 //go to login pagee
 app.get("/login", (req, res) => {
+  if (req.cookies.user_id) {
+    res.redirect("/urls");
+    return;
+  }
   res.render('urls_login')
 })
 //attempt a login
@@ -131,7 +139,7 @@ app.post('/logout', (req, res) => {
 //index
 app.get('/urls', (req, res) => {
   const templateVars = {
-    user: users[req.cookies["user_id"]],
+    user: users[req.cookies.user_id],
     urls: urlDatabase
   };
   res.render('urls_index', templateVars);
@@ -139,8 +147,12 @@ app.get('/urls', (req, res) => {
 
 //visit add new url page
 app.get('/urls/new', (req, res) => {
+  if (!req.cookies.user_id) {
+    res.redirect("/login");
+    return;
+  }
   const templateVars = {
-    user: users[req.cookies["user_id"]],
+    user: users[req.cookies.user_id],
   };
   res.render('urls_new', templateVars);
 });
@@ -159,6 +171,11 @@ app.get('/urls.json', (req, res) => {
 //redirect to longURL
 app.get('/u/:id', (req, res) => {
   console.log('destination', urlDatabase[req.params.id]);
+  
+  if (!urlDatabase[req.params.id]) {
+    res.status(404).redirect('/urls')
+  }
+
   const destination = "http://" + urlDatabase[req.params.id];
   res.redirect(302, destination);
 });
@@ -167,14 +184,18 @@ app.get('/urls/:id', (req, res) => {
   const templateVars = {
     id: req.params.id,
     longURL: urlDatabase[req.params.id],
-    user: users[req.cookies["user_id"]],
+    user: users[req.cookies.user_id],
   };
   res.render('urls_show', templateVars);
 });
 //edit url
 app.post('/urls/:id', (req, res) => {
+  if (req.cookies.user_id) {
+    res.redirect("/urls");
+    return;
+  }
   urlDatabase[req.params.id] = req.body.editURL;
-  res.redirect('/urls/');
+  res.redirect(403, '/urls/');
 });
 //delete a url from the database
 app.post('/urls/:id/delete', (req, res) => {
