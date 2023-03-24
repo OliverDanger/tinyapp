@@ -4,13 +4,14 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["Screenshot of a URL's edit page"](https://github.com/OliverDanger/tinyapp/blob/master/docs/edit_url_page.png?raw=true)
-
 !["Screenshot of login page"](https://github.com/OliverDanger/tinyapp/blob/master/docs/login_page.png?raw=true)
+
+!["Screenshot of the URLs summary page"](https://github.com/OliverDanger/tinyapp/blob/master/docs/urls_page.png?raw=true)
 
 !["Screenshot of new shortURL creation page"](https://github.com/OliverDanger/tinyapp/blob/master/docs/new_url_page.png?raw=true)
 
-!["Screenshot of the URLs summary page"](https://github.com/OliverDanger/tinyapp/blob/master/docs/urls_page.png?raw=true)
+!["Screenshot of a URL's edit page"](https://github.com/OliverDanger/tinyapp/blob/master/docs/edit_url_page.png?raw=true)
+
 
 ## Dependencies
 
